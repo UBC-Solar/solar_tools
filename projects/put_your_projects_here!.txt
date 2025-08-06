@@ -1,0 +1,1 @@
+Did you know Git doesn't allow you to commit an empty folder?

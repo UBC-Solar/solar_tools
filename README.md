@@ -4,7 +4,7 @@ This repository is a place to store testing scripts / tools that have a general 
 
 For example, our SCPI scripts that are used to interface with our DMM's and function generators can be used for any iteration of the car. These scripts should live in this repo.
 
-Testing data and associates visualization scripts should also be stored here. For example, see the control_board_current_characterization branch where we store raw CSV files from the oscilloscope and associated Matplotlib Python scripts.
+Testing data and associated visualization scripts should also be stored here. For example, see the control_board_current_characterization branch where we store raw CSV files from the oscilloscope and associated Matplotlib Python scripts.
 
 ### How to use
 Create a new branch in the repo.
