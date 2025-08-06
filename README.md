@@ -13,3 +13,5 @@ The naming scheme for branches is the same as used in the [firmware repo](https:
 `user/<name>/<project>/<feature>`
 
 On the new branch, create a new folder in /projects. Do all development inside this folder.
+
+For the benefit of future Solar members, consider adding a README.md file to your project folder that links relevant Project Updates on Monday or other documentation that you have created.
