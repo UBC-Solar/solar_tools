@@ -1,10 +1,38 @@
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import os
 import sys
 
-# 
+# I FUCKING LOVE VIBE CODING
+
+# Dictionary for annotated vertical lines: {base_filename: [(x, label, y_offset), ...]}
+ANNOTATED_LINES = {
+    "TEK0015": [
+        (0, "Startup", 0.1),
+        (0.25, "POS", 0.821),
+        (0.45, "NEG", 0.821),
+        (2.4, "LLIM", 0.811),
+        (4.7, "???", 0.1),
+        (5.1, "Fault", 0.1),
+        (6.55, "Shutdown", 0.1)
+    ],
+    # Add more entries as needed, e.g. "TEK0012": [(0.045, "spike start", 0.05), (0.051, "spike end", 0.08)]
+}
+
+# Dictionary for x-axis time ranges: {base_filename: (time_min, time_max)}
+# This is applied after TIME_REBASE
+XRANGES = {
+    "TEK0015": (-0.25, 6.7),
+    # Add more entries as needed
+}
+
+# Dictionary for time axis rebasing: {base_filename: offset_in_seconds}
+TIME_REBASE = {
+    "TEK0015": 0.41,
+    # Add more entries as needed
+}
 
 # Run in terminal with `python plot.py <filename>` or `python plot.py all` to process all files
 
@@ -90,8 +118,17 @@ def plot_voltage_and_current(filename, sensitivity_mv_per_a=200, time_min=None, 
         output_filename (str): Custom base filename for output files (default: None, uses CSV base filename)
         show_smoothed (bool): Whether to display smoothed data (default: True)
     """
+
     # Read the data
     time, voltage = read_tek_csv(filename)
+
+    # Get base filename for saving
+    base_filename = os.path.splitext(os.path.basename(filename))[0]
+
+    # Rebase time axis if specified
+    time_offset = TIME_REBASE.get(base_filename, 0)
+    if time_offset != 0:
+        time = time - time_offset
     
     # For plot 12, use higher offset (0.08V higher than standard)
     # Next time, manually note down the default voltage for 0 A so this isn't an issue (for every test)
@@ -116,14 +153,24 @@ def plot_voltage_and_current(filename, sensitivity_mv_per_a=200, time_min=None, 
     # Apply smoothing to current as well
     current_smooth = smooth_data(current, window_size=11)
     
-    # Get base filename for saving
-    base_filename = os.path.splitext(os.path.basename(filename))[0]
+
+
     if output_filename is not None:
         base_filename = output_filename
-    
+
+    # Get x-range from XRANGES if present and not overridden by arguments
+    x_range = XRANGES.get(base_filename, (None, None))
+    if time_min is None and x_range[0] is not None:
+        time_min = x_range[0]
+    if time_max is None and x_range[1] is not None:
+        time_max = x_range[1]
+
     # Extract test number from filename (e.g., "0012" from "TEK0012.CSV")
     test_number = os.path.splitext(os.path.basename(filename))[0].replace('TEK', '')
-    
+
+    # Get vertical lines to annotate for this file
+    lines_to_annotate = ANNOTATED_LINES.get(base_filename, [])
+
     # Create voltage plot
     fig1, ax1 = plt.subplots(1, 1, figsize=(12, 6))
     if show_smoothed:
@@ -134,26 +181,39 @@ def plot_voltage_and_current(filename, sensitivity_mv_per_a=200, time_min=None, 
     ax1.set_title(f'Voltage vs Time - {os.path.basename(filename)} (Offset: -{voltage_offset:.2f}V)')
     ax1.grid(True, alpha=0.3)
     ax1.legend()
-    
+
+    # Add annotated vertical lines
+    for line in lines_to_annotate:
+        # Support (x, label) or (x, label, y_offset)
+        if len(line) == 3:
+            x, label, y_frac = line
+        else:
+            x, label = line
+            y_frac = 0.1  # Default y offset fraction
+        ax1.axvline(x=x, color='g', linestyle='--', linewidth=1, alpha=0.5)
+        ylim = ax1.get_ylim()
+        y_offset = ylim[1] - y_frac * (ylim[1] - ylim[0])
+        ax1.text(x, y_offset, label, color='g', fontsize=11, fontweight='bold', rotation=90, va='top', ha='right')
+
     # Add test number in top left corner
     ax1.text(0.02, 0.98, f'Test {test_number}', transform=ax1.transAxes, 
              fontsize=12, fontweight='bold', verticalalignment='top',
              bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.8))
-    
+
     # Set time range if specified
     if time_min is not None or time_max is not None:
         ax1.set_xlim(time_min, time_max)
         # Set y-axis to match displayed data range
         time_mask = ((time_min is None) or (time >= time_min)) & ((time_max is None) or (time <= time_max))
         ax1.set_ylim(voltage[time_mask].min() * 0.95, voltage[time_mask].max() * 1.05)
-    
+
     # Save voltage plot
     voltage_filename = f"{base_filename}_voltage.png"
     plt.tight_layout()
     plt.savefig(voltage_filename, dpi=300, bbox_inches='tight')
     print(f"Voltage plot saved as: {voltage_filename}")
     plt.close(fig1)
-    
+
     # Create current plot
     fig2, ax2 = plt.subplots(1, 1, figsize=(12, 6))
     if show_smoothed:
@@ -165,26 +225,39 @@ def plot_voltage_and_current(filename, sensitivity_mv_per_a=200, time_min=None, 
     ax2.set_title(f'Current vs Time (Sensitivity: {sensitivity_mv_per_a} mV/A{smoothed_text})')
     ax2.grid(True, alpha=0.3)
     ax2.legend()
-    
+
+    # Add annotated vertical lines
+    for line in lines_to_annotate:
+        # Support (x, label) or (x, label, y_offset)
+        if len(line) == 3:
+            x, label, y_frac = line
+        else:
+            x, label = line
+            y_frac = 0.1  # Default y offset fraction
+        ax2.axvline(x=x, color='g', linestyle='--', linewidth=1, alpha=0.5)
+        ylim = ax2.get_ylim()
+        y_offset = ylim[1] - y_frac * (ylim[1] - ylim[0])
+        ax2.text(x, y_offset, label, color='g', fontsize=11, fontweight='bold', rotation=90, va='top', ha='right')
+
     # Add test number in top left corner
     ax2.text(0.02, 0.98, f'Test {test_number}', transform=ax2.transAxes, 
              fontsize=12, fontweight='bold', verticalalignment='top',
              bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.8))
-    
+
     # Set time range if specified
     if time_min is not None or time_max is not None:
         ax2.set_xlim(time_min, time_max)
         # Set y-axis to match displayed data range
         time_mask = ((time_min is None) or (time >= time_min)) & ((time_max is None) or (time <= time_max))
         ax2.set_ylim(current[time_mask].min() * 0.95, current[time_mask].max() * 1.05)
-    
+
     # Save current plot
     current_filename = f"{base_filename}_current.png"
     plt.tight_layout()
     plt.savefig(current_filename, dpi=300, bbox_inches='tight')
     print(f"Current plot saved as: {current_filename}")
     plt.close(fig2)
-    
+
     # Print some statistics
     print(f"\nFile: {filename}")
     print(f"Time range: {time.min():.6f} s to {time.max():.6f} s")
@@ -279,9 +352,9 @@ def main():
 # TEK0012: 0.0440 to 0.0512 s
 # TEK0017: 0.0292 to 0.0400 s
 
-plot_voltage_and_current("Oscilloscope-Data/TEK0012.CSV", sensitivity_mv_per_a=200, time_min=0.0440, time_max=0.0512, output_filename="TEK0012_capacitor_spike", show_smoothed=False)
-plot_voltage_and_current("Oscilloscope-Data/TEK0017.CSV", sensitivity_mv_per_a=200, time_min=0.0292, time_max=0.0400, output_filename="TEK0017_capacitor_spike", show_smoothed=False)
-plot_voltage_and_current("Oscilloscope-Data/TEK0017.CSV", sensitivity_mv_per_a=200, time_min=0.24, time_max=0.40, output_filename="TEK0017_pos_contactor", show_smoothed=True)
+#plot_voltage_and_current("Oscilloscope-Data/TEK0012.CSV", sensitivity_mv_per_a=200, time_min=0.0440, time_max=0.0512, output_filename="TEK0012_capacitor_spike", show_smoothed=False)
+#plot_voltage_and_current("Oscilloscope-Data/TEK0017.CSV", sensitivity_mv_per_a=200, time_min=0.0292, time_max=0.0400, output_filename="TEK0017_capacitor_spike", show_smoothed=False)
+#plot_voltage_and_current("Oscilloscope-Data/TEK0017.CSV", sensitivity_mv_per_a=200, time_min=0.24, time_max=0.40, output_filename="TEK0017_pos_contactor", show_smoothed=True)
 
 
 if __name__ == "__main__":

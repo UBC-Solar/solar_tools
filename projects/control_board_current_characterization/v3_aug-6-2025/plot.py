@@ -17,7 +17,7 @@ import sys
 # TEK0012: 0.0440 to 0.0512 s
 # TEK0017: 0.0292 to 0.0400 s
 
-VOLTAGE_OFFSET = 0#1.67 # Internal voltage offset of the TMCS1108A3U current sensor, derived from csv data
+VOLTAGE_OFFSET = 1.67 # Internal voltage offset of the TMCS1108A3U current sensor, derived from csv data
 
 def smooth_data(data, window_size=11):
     """
