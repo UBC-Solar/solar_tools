@@ -14,7 +14,7 @@ ANNOTATED_LINES = {
         (0.25, "POS", 0.821),
         (0.45, "NEG", 0.821),
         (2.4, "LLIM", 0.811),
-        (4.7, "???", 0.1),
+        (4.7, "HLIM", 0.1),
         (5.1, "Fault", 0.1),
         (6.55, "Shutdown", 0.1)
     ],
@@ -356,6 +356,7 @@ def main():
 #plot_voltage_and_current("Oscilloscope-Data/TEK0017.CSV", sensitivity_mv_per_a=200, time_min=0.0292, time_max=0.0400, output_filename="TEK0017_capacitor_spike", show_smoothed=False)
 #plot_voltage_and_current("Oscilloscope-Data/TEK0017.CSV", sensitivity_mv_per_a=200, time_min=0.24, time_max=0.40, output_filename="TEK0017_pos_contactor", show_smoothed=True)
 
+plot_voltage_and_current("Oscilloscope-Data/TEK0015.CSV", sensitivity_mv_per_a=200, time_min=4.6, time_max=5.25, output_filename="TEK0015_hlim_contactor", show_smoothed=True)
 
 if __name__ == "__main__":
     main()
