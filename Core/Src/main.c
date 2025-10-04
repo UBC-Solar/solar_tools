@@ -51,6 +51,9 @@ typedef struct {
 /* USER CODE BEGIN PD */
 
 #define CAN_RX_ID 0x103
+#define CAN_RX_ID2 0X104
+#define CAN_RX_ID3 0X105		//Accepted IDs
+#define CAN_RX_ID4 0x106
 
 /* USER CODE END PD */
 
@@ -151,7 +154,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) //Callback routine when interrupt occurs
 {
 
 
@@ -161,9 +164,21 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
   }
   if ((RxHeader.StdId == CAN_RX_ID))
  	    {
- 	  	  datacheck=1;
+ 	  	  datacheck=1;			// Turns on debug LED in the while loop
 
  	    }
+  else if((RxHeader.StdId = CAN_RX_ID2))
+  {
+	  datacheck = 1;
+  }
+  else if ((RxHeader.StdId = CAN_RX_ID3))
+  {
+	  datacheck = 1;
+  }
+  else if ((RxHeader.StdId = CAN_RX_ID4))
+  {
+	  datacheck = 1;
+  }
 
 }
 
@@ -204,12 +219,6 @@ int main(void)
   MX_CAN_Init();
   /* USER CODE BEGIN 2 */
 
-  if (HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
-  {
-	  Error_Handler();
-  }
-
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -220,12 +229,9 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-
-
-
 	  if (datacheck)
 	    {
-	  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
+	  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);		// Sets Debug LED
 
 	    }
 
@@ -238,8 +244,8 @@ int main(void)
 	 		  uint8_t port = pins_to_check_VCC[i].port_number;
 	 		  int VCC_ID = 0;
 	 		  CAN_tx_transmit_msg(pin_number, port, VCC_ID);
-	 //		  short_flag = 1;
-	 		  HAL_Delay(2000);
+	 		  short_flag = 1;
+	 		  HAL_Delay(2500);
 	 	  }
 
 
@@ -252,8 +258,8 @@ int main(void)
 	 		 uint8_t port = pins_to_check_GND[i].port_number;
 	 		 int GND_ID = 1;
 	 		  CAN_tx_transmit_msg(pin_number, port, GND_ID);
-	 	//	  short_flag = 1;
-	 		  HAL_Delay(2000);
+	 		  short_flag = 1;
+	 		  HAL_Delay(2500);
 	 	  }
 	   }
 
@@ -285,8 +291,8 @@ int main(void)
 	  					  uint8_t port = pins_full[j].port_number;
 	  					  int GPIO_ID=2;
 	  						  CAN_tx_transmit_msg(pin_number, port, GPIO_ID);
-	//  						  short_flag = 1;
-	  						  HAL_Delay(2000);
+	  						  short_flag = 1;
+	  						  HAL_Delay(2500);
 	  				}
 	  			}
 
@@ -301,8 +307,8 @@ int main(void)
 	  					  uint8_t port = pins_full[j].port_number;
 	  					  int GPIO_ID=2;
 	  						  CAN_tx_transmit_msg(pin_number, port, GPIO_ID);
-	//  						  short_flag = 1;
-	  						  HAL_Delay(2000);
+	  						  short_flag = 1;
+	  						  HAL_Delay(2500);
 
 	  				}
 	  			}
@@ -316,10 +322,6 @@ int main(void)
 
 	    }
 
-
-
-
-/* ADD Logic in here to turn on DEBUG LED if CAN_messages are received */
 
 
 

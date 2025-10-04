@@ -12,5 +12,9 @@
 2) Under PCAN view, there will be different values on the receive section. Convert the databytes to decimals and with the first data entry representing the port letter (52 = A, 53 = B, 54 = C, 55 = D) and the pin number following after (e.g 001,002). The CAN-ID represents whether the short is between a VCC (580h) between GND (581h) and between GPIOs (582h).
 3) To confirm that the STM32 can receive CAN messages, transmit through PCAN view with a CAN-ID of 0x103 and see if the debug LED lights up!
 
+## Debug Errors:
+- Make sure that the appropriate power sources are connected including 3.3V **and 5V**.
+- Always set the debug LED as a GPIO output and work around that pin for GPIO input/output initializations. 
+- Make sure when transmitting data to the STM32, it matches the CAN-ID mentioned above.
 
 
