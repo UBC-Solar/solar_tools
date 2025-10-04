@@ -41,6 +41,8 @@ extern CAN_HandleTypeDef hcan;
 void MX_CAN_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+void CAN_tx_transmit_msg(uint8_t GPIO_pin,uint8_t port, int mode);
+void CAN_filter_init(CAN_FilterTypeDef* can_filter);
 
 /* USER CODE END Prototypes */
 
