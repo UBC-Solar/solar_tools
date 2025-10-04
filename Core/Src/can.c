@@ -208,7 +208,7 @@ void CAN_filter_init(CAN_FilterTypeDef* can_filter) {
 
 	//Accepts ID : 0x103
 
-	   can_filter->FilterIdHigh = (0x103 << 5);
+	   can_filter->FilterIdHigh = (CAN_RX_ID << 5);
 	   can_filter->FilterMaskIdHigh = (0x104 << 5);
 	   can_filter->FilterIdLow = (0x105 << 5);
 	   can_filter->FilterMaskIdLow = (0x106 << 5);
