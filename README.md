@@ -5,16 +5,21 @@
    
 2) Check for Pin shorts for non-GPIO pins: Since pins such as VDD and GND as they cannot have the values read, a multimeter will be used to probe that pin and its neighboring pins. As shown on the figure, a continuity test will be conducted for all non-GPIO pins to non-GPIO pins.
    
-3) Check for shorts between the boot pins. As the boot pins cannot be read as well through the STM, a multimeter will be used to check shorts between the boot and its neighboring pins.
+3) Check for shorts between the boot pins. As the boot pins cannot be read as well through the STM32, a multimeter will be used to check shorts between the boot and its neighboring pins.
 
 ## Software Process:
 1) Connect the ST-link (make sure to include the 5V to the PCB) as well as the PCAN connector to the PCB under testing. After, configure the pins to match the logic such as changing the pins for CAN_TX, CAN_RX, Debug pins, etc. After all the pins are set correctly, run the code and look at PCAN view.
-2) Under PCAN view, there will be different values on the receive section. Convert the databytes to decimals and with the first data entry representing the port letter (52 = A, 53 = B, 54 = C, 55 = D) and the pin number following after (e.g 001,002). The CAN-ID represents whether the short is between a VCC (580h) between GND (581h) and between GPIOs (582h).
-3) To confirm that the STM32 can receive CAN messages, transmit through PCAN view with a CAN-ID of 0x103 and see if the debug LED lights up!
+   
+2) Under PCAN view, there will be different values on the receive section. Convert the databytes to decimals and with the first data entry representing the port letter (52 = A, 53 = B, 54 = C, 55 = D) and the pin number following after (e.g 001,002). The CAN-ID represents whether the short is between a VCC (580h) between GND (581h) and between GPIOs (582h). Once you receive this value, bring out a multimeter to probe that pin manually to find the short and rework the STM32 accordingly. After a short is detected, there will be a 2.5 second delay until the code continues again to detect another short.
+   
+3) To confirm that the STM32 can receive CAN messages, transmit through PCAN view with a CAN-ID of 0x103, (0x104, 0x105, 0x106 works as well) and see if the debug LED lights up!
+   
+4) Repeat the Software Check, until nothing gets displayed signifying that no pins are going to be shorted.
 
 ## Debug Errors:
 - Make sure that the appropriate power sources are connected including 3.3V **and 5V**.
 - Always set the debug LED as a GPIO output and work around that pin for GPIO input/output initializations. 
 - Make sure when transmitting data to the STM32, it matches the CAN-ID mentioned above.
+- If a pin is appearing to be shorted on PCAN view, but a multimeter check was done and proven that it wasn't shorted, check if that pin is connected through an **external** pull-up/down resistor that can affect the reading.
 
 
