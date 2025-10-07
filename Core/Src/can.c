@@ -24,16 +24,6 @@
 
 /* Private Includes */
 
-
-#define TRANSMIT_DATA_LENGTH 2 //Sending just pin number for now e.g. "8"
-#define TRANSMIT_MSG_ID_VCC  0x580 //VCC ID
-#define TRANSMIT_MSG_ID_GND  0x581 //GND ID
-#define TRANSMIT_MSG_ID_GPIO  0x582 //GPIO ID
-#define CAN_RX_ID 0x103
-#define CAN_RX_ID2 0x104
-#define CAN_RX_ID3 0X105
-#define CAN_RX_ID4 0x106
-
 CAN_TxHeaderTypeDef transmit_header_VCC = {
     .StdId = TRANSMIT_MSG_ID_VCC,    // your chosen 11-bit ID
     .ExtId = 0x0000,                          // ignored in standard frame
@@ -210,7 +200,7 @@ void CAN_filter_init(CAN_FilterTypeDef* can_filter) {
 
 	//Accepts ID : 0x103, 0x104, 0x105, 0x106
 
-	   can_filter->FilterIdHigh = (CAN_RX_ID << 5);
+	   can_filter->FilterIdHigh = (CAN_RX_ID << 5); //Only checks CAN_RX_ID to turn on Debug LED
 	   can_filter->FilterMaskIdHigh = (CAN_RX_ID2 << 5);
 	   can_filter->FilterIdLow = (CAN_RX_ID3 << 5);
 	   can_filter->FilterMaskIdLow = (CAN_RX_ID4 << 5);
@@ -223,9 +213,5 @@ void CAN_filter_init(CAN_FilterTypeDef* can_filter) {
 
 
 }
-
-
-
-
 
 /* USER CODE END 1 */

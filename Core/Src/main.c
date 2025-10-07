@@ -28,32 +28,12 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef struct {
-    GPIO_TypeDef *port;
-    uint16_t pin;
-    char *name;   // optional, for debug prints
-    uint8_t port_number; //Port A = 52, Port B = 53, Port C = 54
-    uint8_t number;
-} PinConfig;
-
-
-typedef struct {
-    GPIO_TypeDef *port;
-    uint16_t pin;
-    char *name;   // optional, for debug prints
-    int mode; //0 for reading 1 for writing
-    uint8_t port_number; //Port A = 52, Port B = 53, Port C = 54
-} PinConfig_full;
 
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define CAN_RX_ID 0x103
-#define CAN_RX_ID2 0X104
-#define CAN_RX_ID3 0X105		//Accepted IDs
-#define CAN_RX_ID4 0x106
 
 /* USER CODE END PD */
 
@@ -81,8 +61,6 @@ PinConfig pins_to_check_GND[] = {
 
 };
 
-const int PINS_COUNT = sizeof(pins_to_check_VCC)/ sizeof(pins_to_check_VCC[0]); //Checks for length of
-																			// Array in the VCC/GND Checks
 PinConfig_full pins_full[] = {
     {GPIOC, GPIO_PIN_0,  "PC0",  1, 54},
     {GPIOC, GPIO_PIN_1,  "PC1",  0, 54},
@@ -136,9 +114,10 @@ PinConfig_full pins_full[] = {
     {GPIOB, GPIO_PIN_7,  "PB7",  0, 53}
 };
 
+const int PINS_COUNT = sizeof(pins_to_check_VCC)/ sizeof(pins_to_check_VCC[0]); //Checks for length of array in the VCC/GND Checks
+const int PINS_ALL_COUNT = sizeof(pins_full) / sizeof(pins_full[0]); //Checks for length of array in the GPIO checks
 
-const int PINS_ALL_COUNT = sizeof(pins_full) / sizeof(pins_full[0]);//Checks for length of
-int MAX_PINS = 64;													// Array in the GPIO checks
+int MAX_PINS = 64;
 volatile uint8_t datacheck = 0;
 CAN_RxHeaderTypeDef   RxHeader;
 uint8_t               RxData[8];
@@ -157,7 +136,6 @@ void SystemClock_Config(void);
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) //Callback routine when interrupt occurs
 {
 
-
   if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData) != HAL_OK)
   {
     Error_Handler();
@@ -167,18 +145,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) //Callback routi
  	  	  datacheck=1;			// Turns on debug LED in the while loop
 
  	    }
-  else if((RxHeader.StdId = CAN_RX_ID2))
-  {
-	  datacheck = 1;
-  }
-  else if ((RxHeader.StdId = CAN_RX_ID3))
-  {
-	  datacheck = 1;
-  }
-  else if ((RxHeader.StdId = CAN_RX_ID4))
-  {
-	  datacheck = 1;
-  }
 
 }
 
@@ -192,9 +158,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
-	int short_flag = 0;
-
 
   /* USER CODE END 1 */
 
@@ -229,12 +192,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
+
+	  HAL_Delay(2500);
+
 	  if (datacheck)
 	    {
 	  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);		// Sets Debug LED
-
 	    }
-
 
 
 	   for(int i = 0; i<PINS_COUNT; i++){		//Pins to check for shorts between GPIO and VCC
@@ -244,11 +208,8 @@ int main(void)
 	 		  uint8_t port = pins_to_check_VCC[i].port_number;
 	 		  int VCC_ID = 0;
 	 		  CAN_tx_transmit_msg(pin_number, port, VCC_ID);
-	 		  short_flag = 1;
 	 		  HAL_Delay(2500);
 	 	  }
-
-
 	   }
 
 	   for(int i = 0; i< PINS_COUNT; i++){		//Pins to check for shorts between GPIO and GND
@@ -258,27 +219,19 @@ int main(void)
 	 		 uint8_t port = pins_to_check_GND[i].port_number;
 	 		 int GND_ID = 1;
 	 		  CAN_tx_transmit_msg(pin_number, port, GND_ID);
-	 		  short_flag = 1;
 	 		  HAL_Delay(2500);
 	 	  }
 	   }
 
-	   if(short_flag == 0){
-
 	  uint8_t base[MAX_PINS];
 
-
 	  	for(int i = 0; i<PINS_ALL_COUNT; i++) {
-
 	  		base[i] = HAL_GPIO_ReadPin(pins_full[i].port, pins_full[i].pin); //All pins are read to this array
-
 	  	}
-
 
 	  	for (int i = 0; i<PINS_ALL_COUNT; i++) {	//Nested loop to check shorts between GPIO pins
 
 	  		if(pins_full[i].mode == 1) { //If pin is in write mode
-
 
 	  			//Outputs High - Checks shorts between pins with Pull-down
 	  			HAL_GPIO_WritePin(pins_full[i].port, pins_full[i].pin, GPIO_PIN_SET);
@@ -291,7 +244,6 @@ int main(void)
 	  					  uint8_t port = pins_full[j].port_number;
 	  					  int GPIO_ID=2;
 	  						  CAN_tx_transmit_msg(pin_number, port, GPIO_ID);
-	  						  short_flag = 1;
 	  						  HAL_Delay(2500);
 	  				}
 	  			}
@@ -307,7 +259,6 @@ int main(void)
 	  					  uint8_t port = pins_full[j].port_number;
 	  					  int GPIO_ID=2;
 	  						  CAN_tx_transmit_msg(pin_number, port, GPIO_ID);
-	  						  short_flag = 1;
 	  						  HAL_Delay(2500);
 
 	  				}
@@ -316,13 +267,6 @@ int main(void)
 	  		}
 
 	  	}
-
-
-
-
-	    }
-
-
 
 
 
