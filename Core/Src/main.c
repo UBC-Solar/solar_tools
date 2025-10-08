@@ -62,56 +62,56 @@ PinConfig pins_to_check_GND[] = {
 };
 
 PinConfig_full pins_full[] = {
-    {GPIOC, GPIO_PIN_0,  "PC0",  1, 54},
-    {GPIOC, GPIO_PIN_1,  "PC1",  0, 54},
-    {GPIOC, GPIO_PIN_2,  "PC2",  1, 54},
-    {GPIOC, GPIO_PIN_3,  "PC3",  0, 54},
+    {GPIOC, GPIO_PIN_0,  "PC0",  1, 54, 0},
+    {GPIOC, GPIO_PIN_1,  "PC1",  0, 54, 1},
+    {GPIOC, GPIO_PIN_2,  "PC2",  1, 54, 2},
+    {GPIOC, GPIO_PIN_3,  "PC3",  0, 54, 3},
 
-    {GPIOA, GPIO_PIN_0,  "PA0",  0, 52},
-    {GPIOA, GPIO_PIN_1,  "PA1",  1, 52},
-    {GPIOA, GPIO_PIN_2,  "PA2",  0, 52},
-    {GPIOA, GPIO_PIN_3,  "PA3",  0, 52},
-    {GPIOA, GPIO_PIN_4,  "PA4",  0, 52},
-    {GPIOA, GPIO_PIN_5,  "PA5",  1, 52},
-    {GPIOA, GPIO_PIN_6,  "PA6",  0, 52},
-    {GPIOA, GPIO_PIN_7,  "PA7",  1, 52},
+    {GPIOA, GPIO_PIN_0,  "PA0",  0, 52, 0},
+    {GPIOA, GPIO_PIN_1,  "PA1",  1, 52, 1},
+    {GPIOA, GPIO_PIN_2,  "PA2",  0, 52, 2},
+    {GPIOA, GPIO_PIN_3,  "PA3",  0, 52, 3},
+    {GPIOA, GPIO_PIN_4,  "PA4",  0, 52, 4},
+    {GPIOA, GPIO_PIN_5,  "PA5",  1, 52, 5},
+    {GPIOA, GPIO_PIN_6,  "PA6",  0, 52, 6},
+    {GPIOA, GPIO_PIN_7,  "PA7",  1, 52, 7},
 
-    {GPIOC, GPIO_PIN_4,  "PC4",  0, 54},
-    {GPIOC, GPIO_PIN_5,  "PC5",  1, 54},
+    {GPIOC, GPIO_PIN_4,  "PC4",  0, 54, 4},
+    {GPIOC, GPIO_PIN_5,  "PC5",  1, 54, 5},
 
-    {GPIOB, GPIO_PIN_0,  "PB0",  0, 53},
-    {GPIOB, GPIO_PIN_1,  "PB1",  1, 53},
-    {GPIOB, GPIO_PIN_2,  "PB2",  0, 53},
-    {GPIOB, GPIO_PIN_10, "PB10", 1, 53},
-    {GPIOB, GPIO_PIN_11, "PB11", 0, 53},
-    {GPIOB, GPIO_PIN_12, "PB12", 1, 53},		// Pins to check if shorted between other GPIOs
-    {GPIOB, GPIO_PIN_13, "PB13", 0, 53},
-    {GPIOB, GPIO_PIN_14, "PB14", 1, 53},
-    {GPIOB, GPIO_PIN_15, "PB15", 0, 53},
+    {GPIOB, GPIO_PIN_0,  "PB0",  0, 53, 0},
+    {GPIOB, GPIO_PIN_1,  "PB1",  1, 53, 1},
+    {GPIOB, GPIO_PIN_2,  "PB2",  0, 53, 2},
+    {GPIOB, GPIO_PIN_10, "PB10", 1, 53, 10},
+    {GPIOB, GPIO_PIN_11, "PB11", 0, 53, 11},
+    {GPIOB, GPIO_PIN_12, "PB12", 1, 53, 12},		// Pins to check if shorted between other GPIOs
+    {GPIOB, GPIO_PIN_13, "PB13", 0, 53, 13},
+    {GPIOB, GPIO_PIN_14, "PB14", 1, 53, 14},
+    {GPIOB, GPIO_PIN_15, "PB15", 0, 53, 15},
 
-    {GPIOC, GPIO_PIN_6,  "PC6",  1, 54},
-    {GPIOC, GPIO_PIN_7,  "PC7",  0, 54},
-    {GPIOC, GPIO_PIN_8,  "PC8",  1, 54},
-    {GPIOC, GPIO_PIN_9,  "PC9",  0, 54},
+    {GPIOC, GPIO_PIN_6,  "PC6",  1, 54, 6},
+    {GPIOC, GPIO_PIN_7,  "PC7",  0, 54, 7},
+    {GPIOC, GPIO_PIN_8,  "PC8",  1, 54, 8},
+    {GPIOC, GPIO_PIN_9,  "PC9",  0, 54, 9},
 
-    {GPIOA, GPIO_PIN_8,  "PA8",  1, 52},
-    {GPIOA, GPIO_PIN_9,  "PA9",  0, 52},
-    {GPIOA, GPIO_PIN_10, "PA10", 1, 52},
-    {GPIOA, GPIO_PIN_11, "PA11", 0, 52},
-    {GPIOA, GPIO_PIN_12, "PA12", 1, 52},
-    {GPIOA, GPIO_PIN_15, "PA15", 1, 52},
+    {GPIOA, GPIO_PIN_8,  "PA8",  1, 52, 8},
+    {GPIOA, GPIO_PIN_9,  "PA9",  0, 52, 9},
+    {GPIOA, GPIO_PIN_10, "PA10", 1, 52, 10},
+    {GPIOA, GPIO_PIN_11, "PA11", 0, 52, 11},
+    {GPIOA, GPIO_PIN_12, "PA12", 1, 52, 12},
+    {GPIOA, GPIO_PIN_15, "PA15", 1, 52, 15},
 
-    {GPIOC, GPIO_PIN_10, "PC10", 0, 54},
-    {GPIOC, GPIO_PIN_11, "PC11", 1, 54},
-    {GPIOC, GPIO_PIN_12, "PC12", 0, 54},
+    {GPIOC, GPIO_PIN_10, "PC10", 0, 54, 10},
+    {GPIOC, GPIO_PIN_11, "PC11", 1, 54, 11},
+    {GPIOC, GPIO_PIN_12, "PC12", 0, 54, 12},
 
-    {GPIOD, GPIO_PIN_2,  "PD2",  1, 55},
+    {GPIOD, GPIO_PIN_2,  "PD2",  1, 55, 2},
 
-    {GPIOB, GPIO_PIN_3,  "PB3",  0, 53},
-    {GPIOB, GPIO_PIN_4,  "PB4",  1, 53},
-    {GPIOB, GPIO_PIN_5,  "PB5",  0, 53},
-    {GPIOB, GPIO_PIN_6,  "PB6",  1, 53},
-    {GPIOB, GPIO_PIN_7,  "PB7",  0, 53}
+    {GPIOB, GPIO_PIN_3,  "PB3",  0, 53, 3},
+    {GPIOB, GPIO_PIN_4,  "PB4",  1, 53, 4},
+    {GPIOB, GPIO_PIN_5,  "PB5",  0, 53, 5},
+    {GPIOB, GPIO_PIN_6,  "PB6",  1, 53, 6},
+    {GPIOB, GPIO_PIN_7,  "PB7",  0, 53, 7}
 };
 
 const int PINS_COUNT = sizeof(pins_to_check_VCC)/ sizeof(pins_to_check_VCC[0]); //Checks for length of array in the VCC/GND Checks
@@ -143,7 +143,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) //Callback routi
   if ((RxHeader.StdId == CAN_RX_ID))
  	    {
  	  	  datacheck=1;			// Turns on debug LED in the while loop
-
  	    }
 
 }
@@ -240,7 +239,7 @@ int main(void)
 	  			for (int j = 0; j<PINS_ALL_COUNT; j++) if( j!= i) {
 	  				uint8_t in_value = HAL_GPIO_ReadPin(pins_full[j].port, pins_full[j].pin);
 	  				if(base[j] == 0 && in_value == 1){ //if statement checks if values being read changed
-	  					  uint8_t pin_number = pins_full[j].pin;
+	  					  uint8_t pin_number = pins_full[j].number;
 	  					  uint8_t port = pins_full[j].port_number;
 	  					  int GPIO_ID=2;
 	  						  CAN_tx_transmit_msg(pin_number, port, GPIO_ID);
@@ -255,7 +254,7 @@ int main(void)
 	  			for (int j = 0; j<PINS_ALL_COUNT; j++) if( j!= i) {
 	  				uint8_t in_value = HAL_GPIO_ReadPin(pins_full[j].port, pins_full[j].pin);
 	  				if(base[j] == 1 && in_value == 0){ //if statement checks if values being read changed
-	  					  uint8_t pin_number = pins_full[j].pin;
+	  					  uint8_t pin_number = pins_full[j].number;
 	  					  uint8_t port = pins_full[j].port_number;
 	  					  int GPIO_ID=2;
 	  						  CAN_tx_transmit_msg(pin_number, port, GPIO_ID);

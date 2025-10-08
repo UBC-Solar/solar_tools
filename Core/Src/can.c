@@ -173,7 +173,6 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
  */
 void CAN_tx_transmit_msg(uint8_t GPIO_pin, uint8_t port, int mode) {
 
-
   uint8_t transmit_pin[2];
   transmit_pin[0] = port;
   transmit_pin[1] = GPIO_pin;
@@ -210,7 +209,6 @@ void CAN_filter_init(CAN_FilterTypeDef* can_filter) {
 	   can_filter->FilterScale = CAN_FILTERSCALE_16BIT;
 	   can_filter->FilterActivation = ENABLE;
 	   HAL_CAN_ConfigFilter(&hcan, can_filter);
-
 
 }
 

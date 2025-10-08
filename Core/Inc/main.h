@@ -78,6 +78,7 @@ typedef struct {
     char *name;   // optional, for debug prints
     int mode; //0 for reading 1 for writing
     uint8_t port_number; //Port A = 52, Port B = 53, Port C = 54
+    uint8_t number;
 } PinConfig_full;
 
 /* USER CODE END Private defines */
