@@ -47,7 +47,7 @@ Wow!
 
 # TEK0010:
 
-Probing power supply input to see if it's oscillating and causing the oscillation on UVR (voltage divided from 12V Supp)
+Probing power supply input (12V supp test pin on HVC) to see if it's oscillating and causing the oscillation on UVR (voltage divided from 12V Supp)
 
 Huge oscillation still! On the input! (12V_Supp pin that the alligator is connected to)
 
@@ -96,5 +96,60 @@ We set UVR = 8.5, UVF = 8.0 V, expecting the greater range to mean the noise is 
 
 Remember to retune UVR and UVF later!
 
+# LTSpice Note:
+
+I'm using R = 1 ohm and C = 100 nF to backfit what the inductance could be. Then, with all values in the RLC circuit we can retune R or C to change the behaviour as we see fit.
+
+I get a value of ~300 uH!!! Extremely high! With Chris D asked claude its guess was 143 uH, so same order.
+
+Certainly most of this is coming from the PSU and not the wires.
+
+Decreasing capacitance to 10 nF makes our amplitude much smaller.
+
+Increasing R to 10 ohms makes the oscillation much more damped.
+
+We can try replacing the capacitor with a 10 nF one.
+
+# Next test:
+
+Chris D just tuned UVR to 9.5 V and UVF to 7 V, huge hysteresis value, and it seemed to work very well! This matches functionality with V3, good MVP.
+
 # TEK0019:
 
+We replaced the 100 nF capacitor with a 10 nF one.
+
+# TEK0020:
+
+Redo of one above, didn't get good capture for 19.
+
+# TEK0021:
+
+Same replaced capacitor, now testing UVR Supp instead of 12V Supp test pin on HVC.
+
+# TEK0022:
+
+Again on UVR Supp but with 1 ms total instead of 2.5 ms, to overlay onto test 9.
+
+# TEK0023:
+
+Supp gate voltage with same setup as before, 10 nF and 1 ms total time.
+
+# TEK0024:
+
+12V out directly after the save above, since Gate_Supp = Out + 12
+
+# TEK0025:
+
+12V out with a greater time scale to see if we're going on, then off, then on again. As we saw before with 100 nF.
+
+# TEK0026:
+
+Trying Gate_supp again since it seems like it was too low in test 23.
+
+# TEK0027:
+
+Same as 26
+
+# TEK0028:
+
+SAme as 26
