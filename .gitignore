@@ -1,0 +1,15 @@
+venv
+env/
+.env
+.venv
+ENV/
+env.bak/
+venv.bak/
+environment/
+.python-version
+*.pyc
+__pycache__/
+.pytest_cache/
+.tox/
+pip-log.txt
+pip-delete-this-directory.txt
